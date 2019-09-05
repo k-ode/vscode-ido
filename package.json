@@ -3,6 +3,7 @@
     "displayName": "vscode-ido",
     "description": "Emacs ido mode for Visual Studio Code",
     "version": "0.0.1",
+    "publisher": "kimgronqvist",
     "engines": {
         "vscode": "^1.37.0"
     },
