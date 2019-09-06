@@ -2,6 +2,7 @@
 // Import the module and reference it with the alias vscode in your code below
 import * as vscode from 'vscode';
 import * as os from 'os';
+import * as path from 'path';
 import { createFilePick, goUpDirectory, selectItem, FileData } from './ido';
 
 export type ContextType = {
@@ -29,7 +30,14 @@ export function activate(context: vscode.ExtensionContext) {
 
         // const editor: vscode.TextEditor = vscode.window.activeTextEditor;
         const workspaceFolder: string | undefined = vscode.workspace.rootPath;
-        let dir = workspaceFolder;
+        const currentEditor = vscode.window.activeTextEditor;
+        let dir;
+        if (currentEditor) {
+            dir = path.dirname(currentEditor.document.fileName);
+        }
+        else {
+            dir = workspaceFolder;
+        }
         if (!dir) {
             dir = os.homedir();
         }

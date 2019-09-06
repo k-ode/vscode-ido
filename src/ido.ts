@@ -5,7 +5,7 @@
 
 'use strict';
 
-import { window, workspace } from 'vscode';
+import { window, workspace, FileType } from 'vscode';
 import * as fs from 'fs';
 import * as path from 'path';
 import * as util from 'util';
@@ -15,6 +15,13 @@ const writeFile = util.promisify(fs.writeFile);
 const lstat = util.promisify(fs.lstat);
 const readdir = util.promisify(fs.readdir);
 
+const icons = {
+    [FileType.File]: '$(file)',
+    [FileType.Directory]: '$(file-directory)',
+    [FileType.SymbolicLink]: '$(file-symlink-file)',
+    [FileType.Unknown]: '$(file)'
+};
+
 export type FileData = {
     label: string;
     name: string;
@@ -22,6 +29,18 @@ export type FileData = {
     isFile: boolean;
     isDirectory: boolean;
 };
+
+function getFileType(stat: fs.Stats): FileType {
+    if (stat.isFile()) {
+        return FileType.File;
+    } else if (stat.isDirectory()) {
+        return FileType.Directory;
+    } else if (stat.isSymbolicLink()) {
+        return FileType.SymbolicLink;
+    } else {
+        return FileType.Unknown;
+    }
+}
 
 async function getFileList(dir?: string): Promise<FileData[] | undefined> {
     if (!dir) {
@@ -45,7 +64,7 @@ async function getFileList(dir?: string): Promise<FileData[] | undefined> {
 
             if (isFile || isDirectory) {
                 arr.push({
-                    label: file,
+                    label: `${icons[getFileType(stats)]} ${file}`,
                     name: file,
                     path: fullPath,
                     isFile,
@@ -111,13 +130,14 @@ export async function changeToDirectory(context: ContextType, dir: string) {
         return;
     }
 
+    context.input.value = '';
+    context.input.title = dir;
+    context.cwd = dir;
+
     const items = await getFileList(dir);
     if (items) {
         context.input.items = items;
     }
-    context.input.title = dir;
-    context.input.value = '';
-    context.cwd = dir;
 }
 
 export async function createFilePick(context: ContextType, dir: string) {
