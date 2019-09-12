@@ -76,15 +76,21 @@ async function getFileList(dir?: string): Promise<FileData[] | undefined> {
         return arr;
     }, []);
 
+    const sortedFiles = files.sort((a, b) => {
+        if (a.isDirectory && !b.isDirectory) return -1;
+        if (b.isDirectory && !a.isDirectory) return 1;
+        return a.name.localeCompare(b.name);
+    });
+
     const filesWithCommands = [
         {
-            label: '..',
+            label: '$(file-directory) ..',
             name: '..',
             path: path.join(dir, '..'),
             isFile: false,
             isDirectory: true
         }
-    ].concat(files);
+    ].concat(sortedFiles);
 
     return filesWithCommands;
 }
