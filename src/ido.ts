@@ -1,7 +1,7 @@
 // TODO:
-// create missing directories
 // handle errors better
 // change drive
+// go to home directcory
 
 'use strict';
 
@@ -97,9 +97,20 @@ async function getFileList(dir?: string): Promise<FileData[] | undefined> {
 
 async function createNewFileAndOpen(filePath: string, baseDir: string) {
     const newPath = path.join(baseDir, filePath);
+    ensureDirectoryExistence(newPath);
     await writeFile(newPath, '');
     openFile(newPath);
 }
+
+
+function ensureDirectoryExistence(filePath: string) {
+    var dirname = path.dirname(filePath);
+    if (fs.existsSync(dirname)) {
+      return true;
+    }
+    ensureDirectoryExistence(dirname);
+    fs.mkdirSync(dirname);
+  }
 
 async function openFile(filePath: string) {
     const doc = await workspace.openTextDocument(filePath);
