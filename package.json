@@ -2,7 +2,7 @@
     "name": "vscode-ido",
     "displayName": "vscode-ido",
     "description": "Emacs ido mode for Visual Studio Code",
-    "version": "0.2.0",
+    "version": "0.3.0",
     "publisher": "kimgronqvist",
     "license": "MIT",
     "homepage": "https://github.com/kimgronqvist/vscode-ido",
