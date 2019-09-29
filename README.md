@@ -8,8 +8,37 @@ Quickly navigate and create files with the keyboard.
 
 ![Ido](public/ido.gif)
 
-Jump to parent folder directory with `ido-go-up-directory` (bound to Ctrl+l by default).
+## Commands
 
-Enter currently selected directory or open file with `ido-select-item` (bound to Ctrl-j/Enter by default).
+- `ido`
+Activate ido mode.
 
-Create a file by entering a path that doesn't already exists. Ido will automatically create missing subdirectories for you!
+- `ido-go-up-directory`
+Jump to parent folder directory (ctrl+l).
+
+- `ido-select-item`
+Enter currently selected directory or open file. Also creates a file if doesn't already exists. 
+Ido will automatically create missing subdirectories for you! (ctrl+j/enter).
+
+## Keybindings
+
+Ido is not bound to any key binding by default. I bind it to `ctrl+x ctrl+f`.
+
+```
+{ "key": "ctrl+x ctrl+f", "command": "extension.ido" }
+```
+
+See package.json for how to rebind the other commands.
+
+## To do
+
+- Typing `~/` should bring you to your home folder
+- Switch drives
+
+## Contributing
+
+Pull request are welcome!
+
+## License
+
+MIT
